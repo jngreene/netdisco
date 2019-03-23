@@ -97,8 +97,6 @@ swagger_path {
 post qr{^/(?:api/)?login$} => sub {
     my $mode = (request->is_api ? 'API' : 'WebUI');
 
-    my $x = params; use DDP; p $x;
-
     # get authN data from request (HTTP BasicAuth or Form params)
     my $authheader = request->header('Authorization');
     if (defined $authheader and $authheader =~ /^Basic (.*)$/i) {

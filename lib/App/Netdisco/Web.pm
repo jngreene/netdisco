@@ -225,7 +225,6 @@ any qr{.*} => sub {
   # helper for handlers of more than one method type
   *Dancer::Request::is_api = sub {
       my $self = shift;
-      vars->{'orig_path'} = request->path unless request->is_forward;
       my $path = ($self->is_forward ? vars->{'orig_path'} : $self->path);
       return (setting('api_token_lifetime')
         and $self->accept =~ m/(?:json|javascript)/

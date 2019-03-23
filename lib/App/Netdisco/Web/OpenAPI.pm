@@ -27,6 +27,11 @@ $swagger->{securityDefinitions} = {
 };
 $swagger->{security} = [ { APIKeyHeader => [] } ];
 
+# when we start forwarding to ajax handlers for api calls
+hook 'before' => sub {
+  vars->{'orig_path'} = request->path unless request->is_forward;
+};
+
 # workaround for Swagger plugin weird response body
 hook 'after' => sub {
     my $r = shift; # a Dancer::Response
