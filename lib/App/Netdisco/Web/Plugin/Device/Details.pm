@@ -9,24 +9,19 @@ use App::Netdisco::Web::Plugin;
 
 register_device_tab({ tag => 'details', label => 'Details' });
 
-# forward API call to AJAX route handler
+# device details table
 swagger_path {
     description => 'Get properties and power details for a device.',
     tags => ['Devices'],
+    path => '/api/device/{identifier}',
     parameters => [
-        identifier => {in => 'path', required => 1, type => 'string' },
+        identifier => { in => 'path', required => 1, type => 'string' },
     ],
     responses => { default => { examples => {
         # TODO document fields returned
         'application/json' => { device => {} },
     } } },
 },
-get '/api/device/:identifier' => require_login sub {
-    forward '/ajax/content/device/details',
-      { tab => 'details', q => params->{'identifier'} };
-};
-
-# device details table
 get '/ajax/content/device/details' => require_login sub {
     my $q = param('q');
     my $device = schema('netdisco')->resultset('Device')

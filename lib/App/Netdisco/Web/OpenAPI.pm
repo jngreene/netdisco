@@ -63,12 +63,12 @@ hook 'after' => sub {
 };
 
 # forward API calls to AJAX route handlers
-any '/api/:type/:identifier/:method' => require_login sub {
-  pass unless setting('api_enabled')
-    ->{ params->{'type'} }->{ params->{'method'} };
+any '/api/device/**' => require_login sub {
+  my ($parts) = splat;
+  params->{'identifier'} = $parts->[0];
+  params->{'method'} = $parts->[1] || 'details';
 
-  my $target =
-    sprintf '/ajax/content/%s/%s', params->{'type'}, params->{'method'};
+  my $target = sprintf '/ajax/content/device/%s', params->{'method'};
   forward $target, { tab => params->{'method'}, q => params->{'identifier'} };
 };
 
