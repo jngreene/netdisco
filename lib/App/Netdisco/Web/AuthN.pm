@@ -67,7 +67,8 @@ hook 'before' => sub {
 
 # user redirected here (POST -> GET) when login fails
 get qr{^/(?:login(?:/denied)?)?} => sub {
-    if (request->is_api) {
+    if (request->is_api or (param('return_url')
+          and index(param('return_url'), uri_for('/api')->path) == 0)) {
       status('unauthorized');
       return to_json {
         error => 'not authorized',
