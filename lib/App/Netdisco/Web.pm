@@ -186,30 +186,31 @@ hook 'before_template' => sub {
 # remove empty lines from CSV response
 # this makes writing templates much more straightforward!
 hook 'after' => sub {
-    my $r = shift; # a Dancer::Response
+  my $r = shift; # a Dancer::Response
+  my $type = $r->content_type or return;
 
-    if ($r->content_type and $r->content_type eq 'text/comma-separated-values') {
-        my @newlines = ();
-        my @lines = split m/\n/, $r->content;
+  if ($type eq 'text/comma-separated-values') {
+    my @newlines = ();
+    my @lines = split m/\n/, $r->content;
 
-        foreach my $line (@lines) {
-            push @newlines, $line if $line !~ m/^\s*$/;
-        }
-
-        $r->content(join "\n", @newlines);
+    foreach my $line (@lines) {
+        push @newlines, $line if $line !~ m/^\s*$/;
     }
+
+    $r->content(join "\n", @newlines);
+  }
 };
 
 any qr{.*} => sub {
-    if (request->is_api) {
-      status(404);
-      return to_json { error => 'not found' };
-    }
-    else {
-      var('notfound' => true);
-      status 'not_found';
-      template 'index';
-    }
+  if (request->is_api) {
+    status(404);
+    return to_json { error => 'not found' };
+  }
+  else {
+    var('notfound' => true);
+    status 'not_found';
+    template 'index';
+  }
 };
 
 {
@@ -220,15 +221,6 @@ any qr{.*} => sub {
       my $response = Dancer::SharedData->response;
       $response->status($status || 302);
       $response->headers('Location' => $destination);
-  };
-
-  # helper for handlers of more than one method type
-  *Dancer::Request::is_api = sub {
-      my $self = shift;
-      my $path = ($self->is_forward ? vars->{'orig_path'} : $self->path);
-      return (setting('api_token_lifetime')
-        and $self->accept =~ m/(?:json|javascript)/
-        and index($path, uri_for('/api')->path) == 0);
   };
 }
 

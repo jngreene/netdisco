@@ -41,11 +41,9 @@ get '/ajax/content/device/details' => require_login sub {
         = schema('netdisco')->resultset('DevicePower')
         ->search( { 'me.ip' => $device->ip } )->with_poestats->hri->all;
 
-    delete $results[0]->{'snmp_comm'};
-    $results[0]->{'power'} = \@power;
-
     if (request->is_api) {
         content_type('application/json');
+        $results[0]->{'power'} = \@power;
         to_json { device => $results[0] };
     }
     else {
