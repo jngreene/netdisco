@@ -23,6 +23,7 @@ set(
 # this is what Dancer::Template::TemplateToolkit does by default
 config->{engines}->{netdisco_template_toolkit}->{INCLUDE_PATH} ||= [ setting('views') ];
 
+# handle both ajax and API calls (replaces use of send_error builtin)
 register 'bang' => sub {
   if (request->is_api) {
       content_type('application/json');
