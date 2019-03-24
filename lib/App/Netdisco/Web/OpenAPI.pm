@@ -1,5 +1,7 @@
 package App::Netdisco::Web;
 
+use utf8;
+
 use Dancer ':syntax';
 use Dancer::Plugin::Ajax;
 
@@ -61,6 +63,13 @@ hook 'after' => sub {
     $r->content( to_json $content );
   }
 };
+
+# GET /device?q={search}&{params}
+# ✅ GET /device/{ip}
+# GET /device/{ip}/{ports,✅ modules,neighbors,✅ addresses,vlans}
+# PATCH /device/{ip}
+# POST /device
+# DELETE /device/{ip}
 
 # forward API calls to AJAX route handlers
 any '/api/device/**' => require_login sub {
