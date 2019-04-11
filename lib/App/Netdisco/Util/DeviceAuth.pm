@@ -37,7 +37,8 @@ sub fixup_device_auth {
   my $da = dclone (setting('device_auth') || []);
   my $sa = dclone (setting('snmp_auth')   || []);
 
-  die "error: both snmp_auth and device_auth are defined! use only device_auth.\n"
+  die "error: both snmp_auth and device_auth are defined!\n"
+    . "move snmp_auth config into device_auth and remove snmp_auth.\n"
     if scalar @$da and scalar @$sa;
 
   my $config = ((scalar @$da) ? $da : $sa);
@@ -89,7 +90,7 @@ sub fixup_device_auth {
     push @new_stanzas, $stanza;
   }
 
-  # legacy config 
+  # legacy config
   # note: read strings tried before write
   # note: read-write is no longer used for read operations
 

@@ -239,6 +239,7 @@ device_identity: []
 community: []
 community_rw: []
 device_auth: []
+use_legacy_rancidexport: false
 use_legacy_sshcollector: false
 get_credentials: ""
 bulkwalk_off: false
@@ -318,7 +319,7 @@ ignore_interfaces:
   - 'Register-Tunnel\d'
   - 'Blade-Aggregation\d'
   - 'M-GigabitEthernet\d\/\d\/\d'
-  - 'Ethernet(?:-| )QOS Packet Schedu?ler'
+  - 'Ethernet(?:-| )QOS Packet Scheduler'
   - 'Ethernet(?:-| )WFP (?:802\.3|Native) MAC Layer Lightweight Filter'
   - 'ii\d\/\d\/\d+'
 ignore_notpresent_types:
@@ -334,7 +335,7 @@ phone_platforms:
 wap_capabilities:
   - 'wlanAccessPoint'
 wap_platforms:
-  - '(?i:\bw?ap\b)'
+  - '(?i:\bwap\b)'
   - 'cisco\s+AIR-[L|C]?AP'
   - '-K9W8-'
 
@@ -373,6 +374,7 @@ schedule:
     when: '0 8,13,21 * * *'
   expire:
     when: '30 23 * * *'
+  makerancidconf: null
 
 job_prio:
   high:
