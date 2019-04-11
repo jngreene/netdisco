@@ -1,4 +1,4 @@
-package App::Netdisco::Web;
+package App::Netdisco::Web::OpenAPI;
 
 use utf8;
 
