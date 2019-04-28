@@ -4,6 +4,7 @@ use utf8;
 
 use Dancer ':syntax';
 use Dancer::Plugin::Ajax;
+use Dancer::Plugin::Auth::Extensible;
 
 use Dancer::Plugin::Swagger;
 
